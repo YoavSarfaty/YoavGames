@@ -61,13 +61,13 @@ function drawLevel(x) {
 }
 
 function calculateFloor(x) {
-  let h = noise(x / 1000);
+  let h = noise(x / 1000, 0);
   if (h < .5) {
-    return [-10];
+    return [0];
   } else if (h < .8) {
-    return [0, -80];
+    return [0, -noise(x / 1000, 1000) * 80];
   } else {
-    return [0, -80, -160];
+    return [0, -noise(x / 1000, 1000) * 80, -noise(x / 1000, 1000) * 160];
   }
 }
 
@@ -85,7 +85,7 @@ player.draw = function () {
 player.move = function (f) {
   let floor = 0;
   for (let i = 0; i < f.length; i++) {
-    if (player.y <= f[i]) {
+    if (player.y - 10 <= f[i]) {
       floor = f[i];
     }
   }
