@@ -1,6 +1,6 @@
-const cols = 30;
-const rows = 30;
-const foodamnt = 3;
+let cols = 30;
+let rows = 30;
+let foodamnt = 3;
 
 let snake; //Array for snake
 let dir = 0; //Direction of snake
