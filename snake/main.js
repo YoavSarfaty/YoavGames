@@ -22,14 +22,14 @@ function restart() {
   snake = [];
   for (let i = 0; i < 4; i++) {
     snake[i] = {
-      x: round(cols / 2),
-      y: round(rows / 2) - i
+      x: floor(cols / 2),
+      y: floor(rows / 2) - i
     };
   }
   food = new Array(foodamnt).fill().map(() => {
     return {
-      x: round(random(cols)),
-      y: round(random(rows))
+      x: floor(random(cols)),
+      y: floor(random(rows))
     };
   });
 }
@@ -53,8 +53,8 @@ function draw() {
     //eat the food
     if (t.x === snake[snake.length - 1].x && t.y === snake[snake.length - 1].y) {
       snake.unshift({});
-      t.x = round(random(cols));
-      t.y = round(random(rows));
+      t.x = floor(random(cols));
+      t.y = floor(random(rows));
     }
   });
 
