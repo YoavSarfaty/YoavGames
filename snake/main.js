@@ -3,7 +3,7 @@ let rows = 30;
 let foodamnt = 3;
 
 let snake; //Array for snake
-let dir = 0; //Direction of snake
+let dir; //Direction of snake
 let food //Array of food
 
 function setup() {
@@ -18,6 +18,7 @@ function windowResized() {
 
 //A function to restart a game
 function restart() {
+  dir = 0;
   snake = [];
   for (let i = 0; i < 4; i++) {
     snake[i] = {
