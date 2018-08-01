@@ -76,7 +76,6 @@ function draw() {
 }
 
 function getNeighbour(y, x) {
-  console.log(x, y);
   neighbours = [];
   if (x > 0 && !grid[y][x - 1][4]) {
     neighbours.push({
