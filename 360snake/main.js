@@ -13,9 +13,14 @@ let restarttime;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   radius = min(width, height) / 2.1;
-  buttonsize = (min(width, height) - radius) / 4;
   scl = min(width, height) / 500 * 2;
   restart();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  radius = min(width, height) / 2.1;
+  scl = min(width, height) / 500 * 2;
 }
 
 function draw() {
