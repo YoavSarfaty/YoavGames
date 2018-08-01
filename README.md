@@ -11,6 +11,6 @@ TODO:
   *  ~~Recursive backtracker~~
   *  Kruskal's algorithm
   *  Prim's algorithm
-  *  Recursive division
+  *  ~~Recursive division~~
 *  frogger
 *  reaction diffusion
