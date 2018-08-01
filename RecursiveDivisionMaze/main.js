@@ -75,6 +75,11 @@ function run() {
     } else {
       yopen[0] = floor(random(original.starty, original.endy));
     }
+    if (random(1) < .5) {
+      xopen.splice(round(random(1)), 1);
+    } else {
+      yopen.splice(round(random(1)), 1);
+    }
     if (xcut) {
       for (let y = original.starty; y < original.endy; y++) {
         if (!yopen.includes(y)) {
