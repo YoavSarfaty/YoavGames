@@ -61,24 +61,20 @@ function run() {
     let xcut, ycut;
     let xopen = [];
     let yopen = [];
-    if (original.endx - original.startx > 1) {
+    let dir = (random(1) > .5);
+    if (original.endx - original.startx > 1 && dir) {
       xcut = floor(random(original.startx, original.endx));
       xopen[0] = floor(random(original.startx, xcut));
       xopen[1] = floor(random(xcut, original.endx));
     } else {
       xopen[0] = floor(random(original.startx, original.endx));
     }
-    if (original.endy - original.starty > 1) {
+    if (original.endy - original.starty > 1 && (!dir || !xcut)) {
       ycut = floor(random(original.starty, original.endy));
       yopen[0] = floor(random(original.starty, ycut));
       yopen[1] = floor(random(ycut, original.endy));
     } else {
       yopen[0] = floor(random(original.starty, original.endy));
-    }
-    if (random(1) < .5) {
-      xopen.splice(round(random(1)), 1);
-    } else {
-      yopen.splice(round(random(1)), 1);
     }
     if (xcut) {
       for (let y = original.starty; y < original.endy; y++) {
@@ -118,31 +114,6 @@ function run() {
       });
       divisions.push({
         startx: original.startx,
-        starty: ycut + 1,
-        endx: original.endx,
-        endy: original.endy
-      });
-    } else if (xcut && ycut) {
-      divisions.push({
-        startx: original.startx,
-        starty: original.starty,
-        endx: xcut,
-        endy: ycut
-      });
-      divisions.push({
-        startx: original.startx,
-        starty: ycut + 1,
-        endx: xcut,
-        endy: original.endy
-      });
-      divisions.push({
-        startx: xcut + 1,
-        starty: original.starty,
-        endx: original.endx,
-        endy: ycut
-      });
-      divisions.push({
-        startx: xcut + 1,
         starty: ycut + 1,
         endx: original.endx,
         endy: original.endy
