@@ -10,7 +10,7 @@ TODO:
 *  maze generator
     *  ~~Recursive backtracker~~
     *  Kruskal's algorithm
-    *  Prim's algorithm
+    *  ~~Prim's algorithm~~
     *  ~~Recursive division~~
 *  frogger
 *  ~~reaction diffusion~~
