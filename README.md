@@ -9,7 +9,7 @@ TODO:
 *  Conway's Game of Life
 *  maze generator
     *  ~~Recursive backtracker~~
-    *  Kruskal's algorithm
+    *  ~~Kruskal's algorithm~~
     *  ~~Prim's algorithm~~
     *  ~~Recursive division~~
 *  frogger
