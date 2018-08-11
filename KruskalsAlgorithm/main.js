@@ -98,10 +98,10 @@ function draw() {
         map[grid[current.y][current.x][5]] = newg;
         grid[current.y][current.x][5] = newg;
       }
-      console.log("----------------");
-      console.log(wall.x, wall.y);
-      console.log(grid[wall.y][wall.x][5]);
-      console.log(map[grid[wall.y][wall.x][5]]);
+      // console.log("----------------");
+      // console.log(wall.x, wall.y);
+      // console.log(grid[wall.y][wall.x][5]);
+      // console.log(map[grid[wall.y][wall.x][5]]);
     }
   }
   if (walls.length == 0) {
