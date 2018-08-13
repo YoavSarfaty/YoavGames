@@ -44,6 +44,15 @@ function setup() {
 }
 
 function draw() {
+
+  if (newGrid) {
+    grid = newGrid;
+    newGrid = null;
+    current = null;
+    map = [];
+    walls = [];
+  }
+
   background(255);
   noStroke();
   fill(0, 127, 0);

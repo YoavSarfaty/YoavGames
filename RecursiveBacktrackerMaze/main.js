@@ -19,6 +19,17 @@ function setup() {
 }
 
 function draw() {
+
+  if (newGrid) {
+    grid = newGrid;
+    newGrid = null;
+    current = {
+      x: 0,
+      y: 0
+    };
+    stack = [];
+  }
+
   background(255);
   noStroke();
   fill(0, 127, 0);

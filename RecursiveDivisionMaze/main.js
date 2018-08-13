@@ -28,6 +28,13 @@ function setup() {
 }
 
 function draw() {
+
+  if (newGrid) {
+    grid = newGrid;
+    newGrid = null;
+    divisions = [];
+  }
+
   background(255);
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
