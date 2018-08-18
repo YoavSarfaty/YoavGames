@@ -12,12 +12,14 @@ let BUTTONS = [
   []
 ];
 let BUTTON_MARGIN = 100;
+let BUTTON_CLICK = 20;
 let BUTTON_DIST = 100;
 let BUTTON_DIR = VERTICAL;
 let BUTTON_SIZE = 50;
 let BUTTON_STYLE;
 let BUTTON_COLOR = "#00ff83";
 let BUTTON_FCOLOR = "#00b259";
+let BUTTON_DIV = [];
 
 function addButton(text, alignment, callback) {
   button = createButton(text);
@@ -31,6 +33,7 @@ function addButton(text, alignment, callback) {
 }
 
 function setSpacing(margin, dist, dir) {
+
   if (margin != undefined) {
     BUTTON_MARGIN = margin;
   }
@@ -39,6 +42,64 @@ function setSpacing(margin, dist, dir) {
   }
   if (dir != undefined) {
     BUTTON_DIR = dir;
+  }
+
+  BUTTON_CLICK = BUTTON_SIZE + BUTTON_MARGIN;
+
+  if (BUTTON_DIV.length === 0) {
+    div = createDiv();
+    div.class("buttons_div");
+    div.position(0, 0);
+    div.size(windowWidth, BUTTON_CLICK);
+    BUTTON_DIV.push(div);
+    div = createDiv();
+    div.class("buttons_div");
+    div.position(0, 0);
+    div.size(BUTTON_CLICK, windowHeight);
+    BUTTON_DIV.push(div);
+    div = createDiv();
+    div.class("buttons_div");
+    div.position(windowWidth - BUTTON_CLICK, 0);
+    div.size(BUTTON_CLICK, windowHeight);
+    BUTTON_DIV.push(div);
+    div = createDiv();
+    div.class("buttons_div");
+    div.position(0, windowHeight - BUTTON_CLICK);
+    div.size(windowWidth, BUTTON_CLICK);
+    BUTTON_DIV.push(div);
+
+    function hideb(e) {
+      if (!e) return;
+      if (e.clientX < BUTTON_CLICK || e.clientX > windowWidth - BUTTON_CLICK || e.clientY < BUTTON_CLICK || e.clientY > windowHeight - BUTTON_CLICK) return;
+      for (d of BUTTONS) {
+        for (b of d) {
+          b.hide();
+        }
+      }
+    }
+
+    function showb() {
+      for (d of BUTTONS) {
+        for (b of d) {
+          b.show();
+        }
+      }
+    }
+
+    for (d of BUTTON_DIV) {
+      d.mouseOver(showb);
+      d.mouseOut(hideb);
+    }
+
+    hideb();
+
+  } else {
+    BUTTON_DIV[0].size(windowWidth, BUTTON_CLICK);
+    BUTTON_DIV[1].size(BUTTON_CLICK, windowHeight);
+    BUTTON_DIV[2].position(windowWidth - BUTTON_CLICK, 0);
+    BUTTON_DIV[2].size(BUTTON_CLICK, windowHeight);
+    BUTTON_DIV[3].position(0, windowHeight - BUTTON_CLICK);
+    BUTTON_DIV[3].size(windowWidth, BUTTON_CLICK)
   }
   for (let alignment = 0; alignment < 4; alignment++) {
     for (let i = 0; i < BUTTONS[alignment].length; i++) {
@@ -93,7 +154,16 @@ function setStyle(size, color, fcolor) {
   }
   //TODO more styling options
   BUTTON_STYLE.innerHTML =
+    `
+    .buttons_div{
+      z-index:200;
+    }
+    .buttons_div:hover{
+      z-index:50;
+    }
+    ` +
     "\n.buttons{\n" +
+    "z-index: 100;" +
     "border: none;" +
     "border-radius: 50%;" +
     "outline:0;" +
