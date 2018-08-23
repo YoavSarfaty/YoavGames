@@ -5,7 +5,7 @@ https://yoavsarfaty.github.io/YoavGames/
 
 TODO:
 
-*  langton's ant
+*  ~~langton's ant~~
 *  Conway's Game of Life
 *  maze generator
     *  ~~Recursive backtracker~~
