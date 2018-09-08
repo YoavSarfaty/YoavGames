@@ -68,6 +68,7 @@ function mouseClicked() {
 }
 
 function isturn(g, x, y) {
+  if (x < 0 || x > cols - 1 || y < 0 || y > rows - 1) return false;
   if (g[x][y] != 0) return false;
   for (let i = -1; i < 2; i++) {
     for (let j = -1; j < 2; j++) {
@@ -80,27 +81,23 @@ function isturn(g, x, y) {
 }
 
 function flip(g, x, y) {
-  let cx = x,
-    cy = y;
   for (let i = -1; i < 2; i++) {
     for (let j = -1; j < 2; j++) {
-      cx = x + i;
-      cy = y + j;
-      if (!(cx < 0 || cx > cols - 1 || cy < 0 || cy > rows - 1)) {
-        while (g[x][y] === -g[cx][cy]) {
-          cx += i;
-          cy += j;
-          if (cx < 0 || cx > cols - 1 || cy < 0 || cy > rows - 1) break;
-        }
-        if (cx < 0 || cx > cols - 1 || cy < 0 || cy > rows - 1) break;
-        if (g[x][y] === g[cx][cy]) {
-          while (cx != x || cy != y) {
-            cx -= i;
-            cy -= j;
-            g[cx][cy] = g[x][y];
-          }
+      let cx = x + i;
+      let cy = y + j;
+      while (!(cx < 0 || cx > cols - 1 || cy < 0 || cy > rows - 1) && g[x][y] === -g[cx][cy]) {
+        cx += i;
+        cy += j;
+      }
+      if (cx < 0 || cx > cols - 1 || cy < 0 || cy > rows - 1) continue;
+      if (g[x][y] === g[cx][cy]) {
+        while (cx != x || cy != y) {
+          cx -= i;
+          cy -= j;
+          g[cx][cy] = g[x][y];
         }
       }
+
     }
   }
 }
