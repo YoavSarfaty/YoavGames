@@ -64,11 +64,13 @@ function mouseClicked() {
 
     grid[x][y] = -1;
     turn = "white";
-    flip(grid, x, y);
-    updatelog();
-    redraw();
-    //so it can draw!
-    setTimeout(runAI, 100);
+    // free the main thred!
+    (async function () {
+      flip(grid, x, y);
+      updatelog();
+      redraw();
+      runAI();
+    })();
   }
 }
 
@@ -112,22 +114,31 @@ function getscore(g) {
   return g.map((x) => x.reduce(reducer)).reduce(reducer);
 }
 
-function runAI() {
+async function runAI() {
+  let worker = new Worker('worker.js');
+
   AIcounter = 0;
-
   let t0 = performance.now();
-  move = getmove(grid, Think);
-  let t1 = performance.now();
-  AItime = t1 - t0;
+  worker.postMessage({
+    g: grid,
+    i: Think,
+  });
+  worker.onmessage = (raw) => {
+    move = raw.data;
+    let t1 = performance.now();
+    AItime = t1 - t0;
+    AIcounter = move.count;
 
-  AIcounterGlobal += AIcounter;
-  if (move) {
-    grid[move.x][move.y] = 1;
-    flip(grid, move.x, move.y);
-    turn = "black";
-    updatelog();
+    AIcounterGlobal += AIcounter;
+    if (move) {
+      grid[move.x][move.y] = 1;
+      flip(grid, move.x, move.y);
+      turn = "black";
+      updatelog();
+    }
+    redraw();
+    worker.terminate();
   }
-  redraw();
 }
 
 function getmove(g, i, other, bb) {
@@ -136,7 +147,7 @@ function getmove(g, i, other, bb) {
 
   for (let x = 0; x < cols; x++) {
     for (let y = 0; y < rows; y++) {
-      if (isturn(grid, x, y)) {
+      if (isturn(g, x, y)) {
         let gridcopy = g.map(x => x.slice());
         gridcopy[x][y] = (!other) ? 1 : -1;
         flip(gridcopy, x, y);
