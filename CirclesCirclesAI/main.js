@@ -1,4 +1,6 @@
 const cellsize = 70;
+//This is for multithreading, you can pass more functions inside an array so you don't need to copy paste code
+const globalfunctions = [getSlice, getpoints, isturn, gameOver, getPoss, morepoints, getpointsmax];
 
 let bscore = 0;
 let pscore = 0;
@@ -222,127 +224,31 @@ async function calculateAITurn() {
   //TODO better depth choosing, alpha-beta and multithreading!
   timeout = new Promise(resolve => setTimeout(resolve, 1000));
   turnnum++;
-  let best = await multithread(getbestmove)(grid, markedlines, true, bscore, pscore, (turnnum) / 13 * 7, true);
+  let best = await multithread(getbestmove, globalfunctions)(grid, markedlines, true, bscore, pscore, (turnnum) / 13 * 7, true);
   await timeout;
   console.log(`Caulculated ${best[0]} moves!`);
   return best[1];
 }
 
+async function getPoss(g) {
+  let poss = [];
+  for (let i in g) {
+    for (let j in g[i]) {
+      if (isturn(g, i, j)) {
+        poss.push({
+          i: i,
+          j: j
+        });
+      }
+    }
+  }
+  return poss;
+}
+
 async function getbestmove(g, mark, t, originalbscore, originalpscore, depth, first) {
   let totalmovesthisturn = 0;
-
-  function getSlice(g, dir, index, y, xx) {
-    if (dir < 0 || dir > 2) return null;
-    if (index < 1 || index > 6) return null;
-    let f = false;
-    if (dir == 0) {
-      if (y == index) return g[index];
-    }
-    if (dir == 1) {
-      let s = [];
-      for (let x = 0; x <= index; x++) {
-        let i = x + 6 - index;
-        let j = x;
-        s.push(g[i][j]);
-        if (y == i && xx == j) f = true;
-      }
-      if (f) return s;
-    }
-    if (dir == 2) {
-      let s = [];
-      for (let x = 0; x <= index; x++) {
-        let i = x + 6 - index;
-        let j = g[i].length - x - 1;
-        s.push(g[i][j]);
-        if (y == i && xx == j) f = true;
-      }
-      if (f) return s;
-    }
-  }
-
-  function getpoints(g, marks, y, x) {
-    let topscore = 0;
-    let topdir = undefined;
-    let topindex = undefined;
-    for (let i in marks) {
-      for (let j in marks[i]) {
-        if (marks[i][j]) continue;
-        i = Number(i);
-        j = Number(j);
-        let s = getSlice(g, i, j + 1, y, x);
-        if (!s) continue;
-        if ((!s.includes(0)) && s.length > topscore) {
-          topscore = s.length;
-          topdir = i;
-          topindex = j;
-        }
-      }
-    }
-    if (topdir != undefined && topscore != undefined) {
-      marks[topdir][topindex] = true;
-    }
-    return topscore;
-  }
-
-  function isturn(g, i, j) {
-    if (g[i] == undefined) return false;
-    if (g[i][j] == undefined) return false;
-    if (g[i][j] != 0) return false;
-    return true;
-  }
-
-  async function getPoss(g) {
-    let poss = [];
-    for (let i in g) {
-      for (let j in g[i]) {
-        if (isturn(g, i, j)) {
-          poss.push({
-            i: i,
-            j: j
-          });
-        }
-      }
-    }
-    return poss;
-  }
-
-  function gameOver(g) {
-    for (let i in g) {
-      for (let j in g[i]) {
-        if (isturn(g, i, j)) return false;
-      }
-    }
-    return true;
-  }
-
-  function morepoints(marks) {
-    for (let i in marks) {
-      for (let j in marks[i]) {
-        if (!marks[i][j]) return true;
-      }
-    }
-    return false;
-  }
-
-  function getpointsmax(marks) {
-    let topscore = 0;
-    let topdir = undefined;
-    let topindex = undefined;
-    for (let j = 0; j < marks[0].length; j++) {
-      for (let i = 0; i < 3; i++) {
-        if (marks[i][j]) continue;
-        if (j + 2 > topscore) {
-          topscore = j + 2;
-          topdir = i;
-          topindex = j;
-        }
-      }
-    }
-    marks[topdir][topindex] = true;
-    return topscore;
-  }
-
-  //code here!
+  //This is for multithreading, you can pass more functions inside an array so you don't need to copy paste code
+  const globalfunctions = [getSlice, getpoints, isturn, gameOver, getPoss, morepoints, getpointsmax];
 
   let allps = [];
   poss = await getPoss(g);
@@ -373,7 +279,7 @@ async function getbestmove(g, mark, t, originalbscore, originalpscore, depth, fi
         }
       } else if (depth > 0) {
         if (first) {
-          next = await multithread(getbestmove)(newg, newmark, !t, bscore, pscore, depth - 1);
+          next = await multithread(getbestmove, globalfunctions)(newg, newmark, !t, bscore, pscore, depth - 1);
         } else {
           next = await getbestmove(newg, newmark, !t, bscore, pscore, depth - 1);
         }

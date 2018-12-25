@@ -12,7 +12,17 @@ if (!thisSrc) {
   workerMap = new Set();
 }
 
-function multithread(f) {
+function multithread(f, scope) {
+
+  function getCodeText(f, scope) {
+    let text = f.toString() + "\n";
+    if (scope && scope.filter) {
+      text += scope.filter(func => (func instanceof Function)).map(func => func.toString()).join("\n");
+      text += "\n";
+    }
+    return text;
+  }
+
   let workerOnMessage = function (e) {
     if (e.data.type == "run") {
       let res = original_function(...e.data.data);
@@ -34,7 +44,7 @@ function multithread(f) {
 
   let worker_text = `
   importScripts("${thisSrc}");
-  let original_function = ${f.toString()};
+  let original_function = ${getCodeText(f, scope)};
   onmessage = ${workerOnMessage.toString()}`;
 
   if (thisSrc) {
@@ -87,7 +97,7 @@ function multithread(f) {
       workerMap.push(mapresolve);
 
       postMessage({
-        data: f.toString(),
+        data: getCodeText(f, scope),
         type: "new",
         args: Array.from(arguments),
         returnTo: workerMap.length - 1,
