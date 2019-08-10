@@ -17,6 +17,13 @@ function setup() {
 
   let canvas = createCanvas(windowHeight, windowHeight);
   canvas.parent(document.getElementById('canvasdiv'));
+
+  let downloadbutton = document.getElementById('btn-download');
+  downloadbutton.addEventListener('click', (e) => {
+    let dataurl = canvas.elt.toDataURL('image/jpeg');
+    downloadbutton.href = dataurl;
+  });
+
   pixelDensity(1);
   background(0);
 
